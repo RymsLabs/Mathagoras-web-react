@@ -1,0 +1,11 @@
+.main__chatbody {
+    flex-grow: 1;
+    background-color: #e1e1e4;
+    border-radius: 80px;
+    padding: 15px 20px;
+    display: flex;
+    margin-left: 295px ;
+    margin-right: 295px;
+    margin-top: 38px;
+  }
+  

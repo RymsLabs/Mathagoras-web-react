@@ -1,5 +1,5 @@
 {
-  "name": "navbar-dropdown-v1",
+  "name": "mathagoras",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -8,6 +8,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.20.0",
+    "node": "^15.2.0",
     "react": "^16.13.1",
     "react-animated-css": "^1.2.1",
     "react-dom": "^16.13.1",
