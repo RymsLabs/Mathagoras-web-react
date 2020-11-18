@@ -5,7 +5,7 @@ function ClassCardItem(props) {
   return (
     <>
       <li className='classcards__item'>
-        <Link className='classcards__item__link' to={props.path}>
+        <Link className='classcards__item__link' to={{pathname:props.path,state:{CourseID:props.CourseID, date:props.date, discussionId:props.discussionId}}}>
           <figure className='classcards__item__pic-wrap' data-category={props.label}>
             <img
               className='classcards__item__img'

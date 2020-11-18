@@ -38,7 +38,7 @@ class TCoursePage extends React.Component {
 
   render() {
     const posts = this.state.posts.map(post => {
-      return <CourseCardItem key={post.course_id} text={post.description} label={post.name} path={'/classcards'} />
+      return <CourseCardItem key={post.course_id} text={post.description} label={post.name} path={'/classcards'} CourseID={post.course_id}/>
     }
 
     );

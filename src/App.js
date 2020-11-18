@@ -13,6 +13,7 @@ import CoursePage from './components/pages/CoursePage/CoursePage';
 import TCoursePage from './components/pages/CoursePage/TCoursePage';
 import ClassPage from './components/pages/ClassPage/ClassPage';
 import chat from './components/pages/chatBody/ChatBody';
+import Discussion from './components/pages/ClassPage/Discussion';
 
 function App() {
 
@@ -62,7 +63,8 @@ const LoggedInRoute = ({ component: Component , ...rest})=>{
           <LoggedInRoute path='/classcards' exact component={ClassPage} />
           <PublicRoute path='/services' component={Services} />
           <LoggedInRoute path='/quizapp' component={Quiz} />
-          <LoggedInRoute path='/discussion' component={chat} />
+          <LoggedInRoute path='/msgs' component={chat} />
+          <LoggedInRoute path='/discussion' component={Discussion} />
           <AdminRoute path='/Log' component={LogIn} />
           <PublicRoute path='/sign-up' component={SignUp} />
         </Switch>

@@ -1,67 +1,27 @@
+import Axios from "axios";
 import React, { Component, createRef} from "react";
 import "./chatContent.css";
 import ChatItem from "./ChatItem";
 
 export default class ChatContent extends Component {
   messagesEndRef = createRef(null);
-  chatItms = [
-    {
-      key: 1,
-      type: "",
-      msg: "fuking dummy",
-    },
-    {
-      key: 2,
-      type: "other",
-      msg: "just an ui.",
-    },
-    {
-      key: 3,
-      type: "other",
-      msg: "fuk u?",
-    },
-    {
-      key: 4,
-      type: "",
-      msg: "fuk me.",
-    },
-    {
-      key: 5,
-      type: "other",
-      msg: "wanna fuk me?",
-    },
-    {
-      key: 6,
-      type: "",
-      msg: "not sure",
-    },
-    {
-      key: 7,
-      type: "other",
-      msg: "dont be shy",
-    },
-  ];
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      chat: this.chatItms,
-      msg: "",
-    };
+  chatItms = [];
+  state = {
+    chat: []
   }
 
   scrollToBottom = () => {
     this.messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
   };
-
   componentDidMount() {
+    this.fetchMessages();
     window.addEventListener("keydown", (e) => {
       if (e.keyCode === 13) {
         if (this.state.msg !== "") {
           this.chatItms.push({
             key: 1,
             type: "",
-            msg: this.state.msg,
+            message: this.state.message,
             
           });
           this.setState({ chat: [...this.chatItms] });
@@ -72,10 +32,17 @@ export default class ChatContent extends Component {
     });
     this.scrollToBottom();
   }
-  onStateChange = (e) => {
-    this.setState({ msg: e.target.value });
+  fetchMessages = async () => {
+    const x = this.props.discussionId;
+    const response = await Axios.get(`https://mathagoras-backend.herokuapp.com/messages/${x}`);
+    console.log(response.data);
+    this.setState({
+      chat: response.data.messages
+    });
   };
-
+  onStateChange = (e) => {
+    this.setState({ message: e.target.value });
+  };
   render() {
     return (
       <div className="main__chatcontent">
@@ -100,9 +67,9 @@ export default class ChatContent extends Component {
               return (
                 <ChatItem
                   animationDelay={index + 2}
-                  key={itm.key}
-                  user={itm.type ? itm.type : "me"}
-                  msg={itm.msg}
+                  key={itm.message_id}
+                  user={itm.user_type === 'teacher' ? "" : null}
+                  msg={itm.message}
                 />
               );
             })}
@@ -118,7 +85,7 @@ export default class ChatContent extends Component {
               type="text"
               placeholder="Type a message here"
               onChange={this.onStateChange}
-              value={this.state.msg}
+              value={this.state.message}
             />
             <button className="btnSendMsg" id="sendMsgBtn">
               <i className="fa fa-paper-plane"></i>

@@ -62,8 +62,10 @@ class ClassPage extends Component {
                 
                 let classdate = new Date(post['from'])
                 classdate.setDate(classdate.getDate()+i)
+                let date = classdate.toISOString().split('T')[0] + ' ' + post.start_time;
                 const temp=classdate.toDateString()
-                components.push(<ClassCardsItem key={post.class_id} text={`${post.start_time} - ${post.end_time}`} label={temp} path={'/quizapp'} img={'images/teacherclass.jpg'}/>)
+                console.log(`COURSEID: ${post.course_id}`);
+                components.push(<ClassCardsItem key={post.class_id} text={`${post.start_time} - ${post.end_time}`} label={temp} path={'/discussion'} date={date} CourseID={this.props.location.state.CourseID} img={'images/teacherclass.jpg'}/>)
             }
         }
         else {

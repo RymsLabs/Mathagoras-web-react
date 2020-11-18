@@ -7,7 +7,7 @@ export default class ChatBody extends Component {
     return (
       <div className="main__chatbody">
    
-        <ChatContent />
+        <ChatContent discussionId = {this.props.location.state.discussionId} />
        
       </div>
     );
