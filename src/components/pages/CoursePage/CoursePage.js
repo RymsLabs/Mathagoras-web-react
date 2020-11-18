@@ -63,7 +63,8 @@ class CoursePage extends React.Component {
         }}>
           <PopButton parent={this} 
           bname={"Enroll in a Course"} 
-          title={"Enroll"} 
+          title={"Enroll"}
+          label={"enter course id"} 
           msg={"Please ask for the course id from the course instructor you wish to join."} 
           submit={"Enroll"}
           cond={false}/>

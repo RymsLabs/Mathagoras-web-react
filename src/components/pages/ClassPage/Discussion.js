@@ -6,7 +6,8 @@ import PopButton from '../../PopDialog';
 
 class Discussion extends React.Component {
   state = {
-    discussions: []
+    discussions: [],
+    posts: []
   }
   componentDidMount() {
     this.updatePosts()
@@ -16,8 +17,10 @@ class Discussion extends React.Component {
     // this.updatePosts()
   }
 
+  
+
   async updatePosts() {
-    let response;
+    let response,response2;
     console.log("in discussion page");
     try {
       response = await Axios.post(`https://mathagoras-backend.herokuapp.com/discussion/${this.props.location.state.CourseID}/`, {
@@ -30,11 +33,26 @@ class Discussion extends React.Component {
     } catch (err) {
       console.log(err);
     }
-
     if (response) {
       this.setState({ discussions: response.data.discussions });
       console.log(response);
     }
+    try {
+      response2 = await Axios.post(`https://mathagoras-backend.herokuapp.com/post/${this.props.location.state.CourseID}/`, {
+        classDate: `${this.props.location.state.date}`
+      }, {
+        headers: {
+          'Authorization': `Basic ` + window.sessionStorage.getItem("token")
+        }
+      });
+    } catch (err) {
+      console.log(err);
+    }
+    if (response2) {
+      this.setState({ posts: response2.data.posts });
+      console.log(response2);
+    }
+
   }
 
   //test() {
@@ -45,14 +63,50 @@ class Discussion extends React.Component {
     const discussions = this.state.discussions.map(discussion => {
       return <ClassCardsItem key={discussion.discussion_id} text={discussion.title} discussionId={discussion.discussion_id} label={discussion.discussion_id} path={'/msgs'} img={'images/discuss.png'}/>
     }
-
     );
+
+    const posts = this.state.posts.map(Post => {
+      return <ClassCardsItem key={Post.post_id} text={Post.message} label={Post.title} path={'/msgs'} img={'images/post.png'}/>
+    }
+    );
+
+    const gg =window.sessionStorage.getItem("isStudent") === 'false' ? 
+     <div>
+      <PopButton parent={this}
+      bname={"Add a Post"} 
+      title={"Add Post"} 
+      msg={"Add something you wanna post to all"}
+      label1={"enter post title"}
+      label2={"enter post description"}
+      submit={"Add"} 
+      cond={true}
+      postss={window.sessionStorage.getItem("isStudent")}
+      classId={this.props.location.state.CourseID} 
+      classDate={this.props.location.state.date}/>
+      <br></br>
+      <PopButton parent={this}
+      bname={"Create a Discussion"} 
+      title={"Create a Discussion"} 
+      msg={""}
+      label={"enter discussion title"}
+      submit={"Add"} 
+      cond={false}
+      postss={window.sessionStorage.getItem("isStudent")}
+      classId={this.props.location.state.CourseID} 
+      classDate={this.props.location.state.date}/>
+      </div>
+    
+         :
+        null
+      
     return (
       <div className='cardss'>
         <div className='cardss__container'>
           <div className='cardss__wrapper'>
             <div className='cardss__items'>
-              {discussions}
+              <ul>{discussions}
+                  {posts}
+              </ul>
             </div>
           </div>
         </div>
@@ -63,16 +117,21 @@ class Discussion extends React.Component {
           , opacity: 0.65
           ,borderRadius:6
         }}>
-          {/* <PopButton parent={this} 
-          bname={"Enroll in a Course"} 
-          title={"Enroll"} 
-          msg={"Please ask for the course id from the course instructor you wish to join."} 
-          submit={"Enroll"}
-          cond={false}/> */}
-        </div>
-        {/* <button>Delete a course</button> */}
-        
+            { gg}
+          {/* <PopButton parent={this}
+          bname={"Add a Post"} 
+          title={"Add Post"} 
+          msg={"Add something you wanna post to all"}
+          label1={"enter post title"}
+          label2={"enter post description"}
+          submit={"Add"} 
+          cond={window.sessionStorage.getItem("isStudent")}
+          postss={window.sessionStorage.getItem("isStudent")}
+          classId={this.props.location.state.CourseID} 
+          classDate={this.props.location.state.date}/> */}
+          
 
+        </div>
       </div>
     );
   }

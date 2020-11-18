@@ -30,6 +30,7 @@ class Log extends React.Component {
                 }).then(response => {
                     if (response.status === 200) {
                         window.sessionStorage.setItem("token",token)
+                        window.sessionStorage.setItem("isStudent",isStudent)
                         window.open("/studentcards", "_blank")
                     
 
@@ -59,6 +60,7 @@ class Log extends React.Component {
                 }).then(response => {
                     if (response.status === 200) {
                         window.sessionStorage.setItem("token",token)
+                        window.sessionStorage.setItem("isStudent",isStudent)
                         window.open('/TeacherCourse', "_blank")
                         
                     }

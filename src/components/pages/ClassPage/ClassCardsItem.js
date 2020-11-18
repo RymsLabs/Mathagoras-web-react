@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 function ClassCardItem(props) {
+var Latex = require('react-latex');
   return (
     <>
       <li className='classcards__item'>
@@ -15,7 +16,7 @@ function ClassCardItem(props) {
             />
           </figure>
           <div className='classcards__item__info'>
-            <h5 className='classcards__item__text'>{props.text}</h5>
+            <h5  className='classcards__item__text'><Latex >{props.text}</Latex></h5>
           </div>
         </Link>
       </li>

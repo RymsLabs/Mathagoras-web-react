@@ -47,7 +47,7 @@ class TCoursePage extends React.Component {
         <div className='cardss__container'>
           <div className='cardss__wrapper'>
             <div className='cardss__items'>
-              {posts}
+              <ul>{posts}</ul>
             </div>
           </div>
         </div>
@@ -62,6 +62,8 @@ class TCoursePage extends React.Component {
           bname={"Add a course"} 
           title={"Add Course"} 
           msg={"Please Enter the Course ID and Description of your Course"}
+          label1={"enter course name"}
+          label2={"enter course description"}
           submit={"Add"} 
           cond={true}/>
         </div>

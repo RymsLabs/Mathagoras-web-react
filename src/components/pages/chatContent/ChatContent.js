@@ -13,23 +13,51 @@ export default class ChatContent extends Component {
   scrollToBottom = () => {
     this.messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
   };
+  
   componentDidMount() {
     this.fetchMessages();
     window.addEventListener("keydown", (e) => {
       if (e.keyCode === 13) {
-        if (this.state.msg !== "") {
-          this.chatItms.push({
-            key: 1,
-            type: "",
-            message: this.state.message,
+        if (this.state.message !== "") {
+          // this.chatItms.push({
+          //   key: 1,
+          //   type: "",
+          //   message: this.state.message,
             
-          });
-          this.setState({ chat: [...this.chatItms] });
-          this.scrollToBottom();
-          this.setState({ msg: "" });
+          // });
+          // this.setState({ chat: [...this.chatItms] });
+          // this.scrollToBottom();
+          // this.setState({ msg: "" });
+          this.sendmessage();
         }
       }
     });
+  }
+  sendmessage = async () => {
+    const message = this.state.message;
+    let url;
+    if (window.sessionStorage.getItem("isStudent") === 'true') {
+      url = 'https://mathagoras-backend.herokuapp.com/messages/student/';
+    } else {
+      url = 'https://mathagoras-backend.herokuapp.com/messages/teacher/'
+    }
+    try {
+      await Axios.post(url, {
+        discussionId: this.props.discussionId,
+        message: message,
+      }, {
+        headers: {
+          'Authorization': `Basic ` + window.sessionStorage.getItem("token")
+        }
+      });
+    } catch (err) {
+      console.log(err);
+      alert('ERROR!');
+    }
+    this.setState({
+      message: ''
+    });
+    await this.fetchMessages();
     this.scrollToBottom();
   }
   fetchMessages = async () => {
@@ -39,6 +67,7 @@ export default class ChatContent extends Component {
     this.setState({
       chat: response.data.messages
     });
+    this.scrollToBottom();
   };
   onStateChange = (e) => {
     this.setState({ message: e.target.value });
@@ -55,7 +84,7 @@ export default class ChatContent extends Component {
 
           <div className="blocks">
             <div className="settings">
-              <button className="btn-nobg">
+              <button style={{color:"white"}} className="btn-nobg">
                 <i className="fa fa-cog"></i>
               </button>
             </div>
@@ -66,9 +95,10 @@ export default class ChatContent extends Component {
             {this.state.chat.map((itm, index) => {
               return (
                 <ChatItem
+                  date={itm.message_time}
                   animationDelay={index + 2}
                   key={itm.message_id}
-                  user={itm.user_type === 'teacher' ? "" : null}
+                  user={itm.user_type === 'teacher' ? null : 'me'}
                   msg={itm.message}
                 />
               );
@@ -79,7 +109,7 @@ export default class ChatContent extends Component {
         <div className="content__footer">
           <div className="sendNewMessage">
             <button className="addFiles" style={{backgroundColor:"black",opacity:0.65}}>
-              <i className="fa fa-plus" style={{alignSelf:"center"}}></i>
+              <i className="fa fa-plus" style={{justifyContent:"center"}}></i>
             </button>
             <input style={{color:"black",opacity:0.65}}
               type="text"
@@ -87,7 +117,10 @@ export default class ChatContent extends Component {
               onChange={this.onStateChange}
               value={this.state.message}
             />
-            <button className="btnSendMsg" id="sendMsgBtn">
+            <button className="btnSendMsg" id="sendMsgBtn"
+            onClick={() => {
+              if(this.state.message !== '') this.sendmessage();
+            }}>
               <i className="fa fa-paper-plane"></i>
             </button>
           </div>
