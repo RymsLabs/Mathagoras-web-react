@@ -99,10 +99,13 @@
   .classcards__item__info {
     padding: 20px 30px 30px;
     color: "black";
+    background-color: rgb(79, 78, 83);
+    opacity: 0.8;
   }
   
   .classcards__item__text {
     color: #252e48;
+    background-color: rgb(79, 78, 83);
     font-size: 18px;
     line-height: 24px;
   }

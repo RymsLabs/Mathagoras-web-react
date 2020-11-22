@@ -16,7 +16,7 @@ var Latex = require('react-latex');
             />
           </figure>
           <div className='classcards__item__info'>
-            <h5  className='classcards__item__text'><Latex >{props.text}</Latex></h5>
+            <h5 className='classcards__item__text'><Latex displayMode = {true}>{props.text}</Latex></h5>
           </div>
         </Link>
       </li>
